@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Medical Agent</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef7f8;
+        }
+
+        .header {
+            background: #087f8c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+            overflow: hidden;
+        }
+
+        .chat-box {
+            height: 500px;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8ffff;
+        }
+
+        .message {
+            margin: 12px 0;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+
+        .bot {
+            background: #dff3f5;
+            color: #123;
+            margin-right: auto;
+        }
+
+        .user {
+            background: #087f8c;
+            color: white;
+            margin-left: auto;
+        }
+
+        .input-area {
+            display: flex;
+            padding: 15px;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #bbb;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            background: #087f8c;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #055f69;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .warning {
+            padding: 15px;
+            background: #fff4d6;
+            color: #664d03;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 96%;
+                margin: 15px auto;
+            }
+
+            .chat-box {
+                height: 450px;
+            }
+
+            .input-area {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🩺 AI Medical Agent</h1>
+        <p>Your health information assistant</p>
+    </div>
+
+    <div class="container">
+
+        <div class="warning">
+            ⚠️ This assistant provides general health information.
+            It is not a replacement for a doctor or emergency medical care.
+        </div>
+
+        <div id="chatBox" class="chat-box">
+
+            <div class="message bot">
+                👋 Hello! I am your AI Medical Agent.<br><br>
+                You can ask me about symptoms, common health conditions,
+                medicines, first-aid information, or when to seek medical help.
+            </div>
+
+        </div>
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Type your health question..."
+                onkeydown="handleEnter(event)"
+            >
+
+            <button onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+        <div class="buttons">
+
+            <button onclick="quickQuestion('I have a headache. What should I do?')">
+                🤕 Headache
+            </button>
+
+            <button onclick="quickQuestion('I have fever. What should I do?')">
+                🌡️ Fever
+            </button>
+
+            <button onclick="quickQuestion('I have stomach pain. What should I do?')">
+                🤢 Stomach Pain
+            </button>
+
+            <button onclick="findHospital()">
+                🏥 Find Hospital
+            </button>
+
+        </div>
+
+    </div>
+
+
+<script>
+
+function addMessage(text, sender) {
+
+    const chatBox = document.getElementById("chatBox");
+
+    const message = document.createElement("div");
+
+    message.className = "message " + sender;
+
+    message.innerHTML = text;
+
+    chatBox.appendChild(message);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+function sendMessage() {
+
+    const input = document.getElementById("userInput");
+
+    const text = input.value.trim();
+
+    if (text === "") {
+        return;
+    }
+
+    // Show user's message
+    addMessage(text, "user");
+
+    input.value = "";
+
+    // Show AI response after a short delay
+    setTimeout(function() {
+
+        const response = getMedicalResponse(text);
+
+        addMessage(response, "bot");
+
+    }, 700);
+}
+
+
+function handleEnter(event) {
+
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+
+}
+
+
+function quickQuestion(question) {
+
+    document.getElementById("userInput").value = question;
+
+    sendMessage();
+
+}
+
+
+function getMedicalResponse(text) {
+
+    const message = text.toLowerCase();
+
+
+    // Emergency keywords
+    if (
+        message.includes("chest pain") ||
+        message.includes("difficulty breathing") ||
+        message.includes("can't breathe") ||
+        message.includes("unconscious") ||
+        message.includes("severe bleeding")
+    ) {
+
+        return `
+        🚨 <strong>This may require urgent medical attention.</strong><br><br>
+
+        Please contact your local emergency service or go to the
+        nearest emergency department immediately.
+
+        <br><br>
+        Do not rely on this chat for emergency diagnosis.
+        `;
+    }
+
+
+    // Headache
+    if (
+        message.includes("headache") ||
+        message.includes("head pain")
+    ) {
+
+        return `
+        🤕 <strong>Headache information</strong><br><br>
+
+        Common causes can include dehydration, lack of sleep,
+        stress, eye strain, or a viral illness.
+
+        <br><br>
+
+        Try drinking water, resting, and avoiding excessive screen
+        time.
+
+        <br><br>
+
+        If the headache is sudden and extremely severe, follows a
+        serious injury, or occurs with weakness, confusion, seizures,
+        or other concerning symptoms, seek urgent medical care.
+        `;
+    }
+
+
+    // Fever
+    if (
+        message.includes("fever") ||
+        message.includes("temperature")
+    ) {
+
+        return `
+        🌡️ <strong>Fever information</strong><br><br>
+
+        Rest and drink plenty of fluids. Monitor your temperature
+        and watch for other symptoms.
+
+        <br><br>
+
+        If the fever is very high, persistent, or accompanied by
+        severe weakness, breathing difficulty, confusion, seizures,
+        or other serious symptoms, contact a healthcare professional.
+        `;
+    }
+
+
+    // Cough
+    if (
+        message.includes("cough") ||
+        message.includes("cold")
+    ) {
+
+        return `
+        🤧 <strong>Cough / cold information</strong><br><br>
+
+        Many coughs are caused by viral infections and improve with
+        time.
+
+        <br><br>
+
+        Rest, drink fluids, and avoid smoking or other irritants.
+
+        <br><br>
+
+        Seek medical advice if symptoms are severe, persistent,
+        worsening, or associated with breathing difficulty or chest pain.
+        `;
+    }
+
+
+    // Stomach
+    if (
+        message.includes("stomach") ||
+        message.includes("abdominal") ||
+        message.includes("vomiting") ||
+        message.includes("diarrhea")
+    ) {
+
+        return `
+        🤢 <strong>Digestive symptoms</strong><br><br>
+
+        Drink fluids to reduce the risk of dehydration and eat
+        light foods if you can tolerate them.
+
+        <br><br>
+
+        Severe abdominal pain, repeated vomiting, blood in vomit or
+        stool, fainting, or significant dehydration requires medical
+        attention.
+        `;
+    }
+
+
+    // Medicine
+    if (
+        message.includes("medicine") ||
+        message.includes("tablet") ||
+        message.includes("drug")
+    ) {
+
+        return `
+        💊 <strong>Medicine information</strong><br><br>
+
+        I can provide general information about medicines, but you
+        should not start or change prescription medicines based only
+        on an AI response.
+
+        <br><br>
+
+        Tell me the <strong>name of the medicine</strong> and I can
+        explain its common uses, precautions, and possible side effects.
+        `;
+    }
+
+
+    // Default response
+    return `
+        🩺 <strong>Medical Agent</strong><br><br>
+
+        I understand your question:
+        <strong>${escapeHTML(text)}</strong>
+
+        <br><br>
+
+        I can give general health information, but I cannot safely
+        diagnose a medical condition from a message alone.
+
+        <br><br>
+
+        Please tell me more about your symptoms, such as:
+        <ul>
+            <li>What symptoms do you have?</li>
+            <li>How long have you had them?</li>
+            <li>How severe are they?</li>
+            <li>Are there any other symptoms?</li>
+        </ul>
+
+        If symptoms are severe or life-threatening, seek emergency
+        medical care.
+    `;
+
+}
+
+
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+function findHospital() {
+
+    // Opens Google Maps using the user's current location
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                const url =
+                    "https://www.google.com/maps/search/hospital/@"
+                    + lat + "," + lon + ",14z";
+
+                window.open(url, "_blank");
+
+            },
+
+            function() {
+
+                window.open(
+                    "https://www.google.com/maps/search/hospitals+near+me",
+                    "_blank"
+                );
+
+            }
+
+        );
+
+    } else {
+
+        window.open(
+            "https://www.google.com/maps/search/hospitals+near+me",
+            "_blank"
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
+```
+
+</body>
+</html>

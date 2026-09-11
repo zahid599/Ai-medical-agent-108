@@ -1,0 +1,65 @@
+AI MEDICAL ASSISTANT WEBSITE
+
+This is an HTML, CSS and JavaScript version of the AI Medical Assistant.
+
+FILES
+-----
+index.html
+style.css
+script.js
+README.txt
+
+
+HOW TO RUN
+-----------
+1. Put index.html, style.css and script.js in the same folder.
+2. Double-click index.html.
+3. The website will open in Google Chrome.
+
+
+FEATURES
+--------
+- Symptom Chat
+- Disease/Condition Check
+- Medicine Information
+- Nearby Hospital Search
+- Google Maps hospital search
+- Emergency 112 button
+- Mobile-friendly design
+
+
+IMPORTANT
+---------
+This project is for educational purposes.
+
+It does NOT provide a medical diagnosis.
+The medicine and symptom information is demonstration data.
+
+Always consult a qualified doctor or pharmacist
+for medical advice.
+
+
+HOSPITAL LOCATION
+-----------------
+The hospital distances shown on the website are
+demonstration values.
+
+Use Google Maps to verify the current hospital
+location, availability and services.
+
+
+LOCATION FEATURE
+----------------
+The "Find Hospitals Near Me" button uses your
+browser's location permission.
+
+You must allow location access when your browser asks.
+
+
+WEBSITE HOSTING
+---------------
+This is a static website.
+
+You can upload index.html, style.css and script.js
+to a static web hosting service to make the website
+available online.
